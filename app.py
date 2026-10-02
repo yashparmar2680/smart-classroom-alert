@@ -1,5 +1,8 @@
 from flask import Flask, jsonify, render_template, request, session
 import mysql.connector
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = "smart-classroom-secret-key"
@@ -7,10 +10,12 @@ app.secret_key = "smart-classroom-secret-key"
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="2510",
-        database="smart_classroom"
+        host=os.getenv("DB_HOST"),
+        port=int(os.getenv("DB_PORT", 23126)),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
+        ssl_disabled=False
     )
 
 
